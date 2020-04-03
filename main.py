@@ -2,6 +2,7 @@ def tee_seloste(data):
     #alustetaan muuttujia
     tulostus = ""
     toimialat_sarakkeille = {}
+    seloste_toimialoille = {}
 
     #luetaan data
     data = open(data, encoding="latin-1")
@@ -37,6 +38,11 @@ def tee_seloste(data):
                     toimiala += sana + " "
                 toimialat_sarakkeille[i] = toimiala.lstrip()
 
+        #for i in range(len(toimialat_sarakkeille)):
+        #    seloste_toimialoille[i] = toimialat_sarakkeille.get(i)
+            for avain in toimialat_sarakkeille:
+                seloste_toimialoille[toimialat_sarakkeille.get(avain)] = ""
+
         #sarakkeiden lukumäärän päättely
         sarakkeet_lkm = len(sarakkeet)
 
@@ -48,12 +54,24 @@ def tee_seloste(data):
             #päätellään, onko kasvua vai laskua ja lisätään selosteeseen oikea tulostus
             for i in range(1, sarakkeet_lkm):
                 if float(sarakkeet[i]) > 0:
-                    tulostus += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " kasvoi " + str(sarakkeet[0]) + " neljänneksellä " + str(sarakkeet[i]) + " prosenttia. " + "\n"
+                    lisays = seloste_toimialoille.get(toimialat_sarakkeille[i])
+                    lisays += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " kasvoi " + str(sarakkeet[0]) + " neljänneksellä " + str(sarakkeet[i]) + " prosenttia. " + "\n"
+                    seloste_toimialoille[toimialat_sarakkeille[i]] = lisays
+                    #tulostus += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " kasvoi " + str(sarakkeet[0]) + " neljänneksellä " + str(sarakkeet[i]) + " prosenttia. " + "\n"
                 elif float(sarakkeet[i]) < 0:
-                    tulostus += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " supistui " + str(sarakkeet[0]) + " neljänneksellä " + str(sarakkeet[i]) + " prosenttia. " + "\n"
+                    lisays = seloste_toimialoille.get(toimialat_sarakkeille[i])
+                    lisays += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " supistui " + str(sarakkeet[0]) + " neljänneksellä " + str(sarakkeet[i]) + " prosenttia. " + "\n"
+                    seloste_toimialoille[toimialat_sarakkeille[i]] = lisays
+                    #tulostus += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " supistui " + str(sarakkeet[0]) + " neljänneksellä " + str(sarakkeet[i]) + " prosenttia. " + "\n"
                 else:
-                    tulostus += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " ei kasvanut eikä supistunut " + str(sarakkeet[0]) + " neljänneksellä." + "\n"
+                    lisays = seloste_toimialoille.get(toimialat_sarakkeille[i])
+                    lisays += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " ei kasvanut eikä supistunut " + str(sarakkeet[0]) + " neljänneksellä." + "\n"
+                    seloste_toimialoille[toimialat_sarakkeille[i]] = lisays
+                    #tulostus += "Toimialan " + str(toimialat_sarakkeille[i]) + " " + str(muuttuja) + " ei kasvanut eikä supistunut " + str(sarakkeet[0]) + " neljänneksellä." + "\n"
         rivi += 1
+
+    for avain in seloste_toimialoille:
+        tulostus += seloste_toimialoille.get(avain) + "\n"
 
     with open("seloste.txt", "x") as f:
         f.write(tulostus)
@@ -62,3 +80,4 @@ def tee_seloste(data):
 
 
 print(tee_seloste("C:\\Users\\ossik\\Downloads\\004_111y_2020m01.csv"))
+#print(tee_seloste("C:\\Users\\ossik\\Downloads\\004_112d_2020m01.csv"))
